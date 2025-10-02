@@ -1,9 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useAppDispatch, useAppSelector } from "../../reduxHooks";
+import {
+  registerUser,
+  clearState
+} from "../features/signupSlice";
+import type { RegisterFormData } from "../features/signupSlice";
 
 export default function SignupForm() {
-  const [formData, setFormData] = useState({
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { loading, error, success } = useAppSelector((state) => state.register);
+
+  const [formData, setFormData] = useState<RegisterFormData>({
     name: "",
     surname: "",
     email: "",
@@ -13,80 +22,46 @@ export default function SignupForm() {
     lists: [],
   });
 
-  const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string>
+  >({});
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    let isValid = true;
-    const validationErrors = {};
-
-    // ✅ Basic validations
-    if (!formData.name) {
-      isValid = false;
-      validationErrors.name = "First name is required";
-    }
-    if (!formData.surname) {
-      isValid = false;
-      validationErrors.surname = "Surname is required";
-    }
-    if (!formData.phone) {
-      isValid = false;
-      validationErrors.phone = "Phone number is required";
-    }
-    if (!formData.email) {
-      isValid = false;
-      validationErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      isValid = false;
-      validationErrors.email = "Please enter a valid email";
-    }
-    if (!formData.password) {
-      isValid = false;
-      validationErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      isValid = false;
-      validationErrors.password = "Password must be at least 6 characters";
-    }
-    if (formData.cpassword !== formData.password) {
-      isValid = false;
-      validationErrors.cpassword = "Passwords do not match";
-    }
-
-    setErrors(validationErrors);
-
-    if (!isValid) return;
-
-   try {
-     // Check for duplicate email
-     const emailCheck = await axios.get(
-       `http://localhost:3000/users?email=${formData.email}`
-     );
-
-     if (emailCheck.data.length > 0) {
-       alert("Email is already registered!");
-       return;
-     }
-
-     // Check for duplicate phone
-     const phoneCheck = await axios.get(
-       `http://localhost:3000/users?phone=${formData.phone}`
-     );
-
-     if (phoneCheck.data.length > 0) {
-       alert("Phone number is already registered!");
-       return;
-     }
-
-     // ✅ Save user
-     await axios.post("http://localhost:3000/users", formData);
-     alert("Successfully registered 🎉");
-     navigate("/login");
-   } catch (err) {
-     console.error(err);
-     alert("Something went wrong, please try again.");
-   }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const validate = () => {
+    const errors: Record<string, string> = {};
+    if (!formData.name) errors.name = "First name is required";
+    if (!formData.surname) errors.surname = "Surname is required";
+    if (!formData.phone) errors.phone = "Phone is required";
+    if (!formData.email) errors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(formData.email))
+      errors.email = "Invalid email";
+    if (!formData.password) errors.password = "Password required";
+    else if (formData.password.length < 6)
+      errors.password = "Password must be at least 6 characters";
+    if (formData.cpassword !== formData.password)
+      errors.cpassword = "Passwords do not match";
+    return errors;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const errors = validate();
+    setValidationErrors(errors);
+    if (Object.keys(errors).length === 0) {
+      dispatch(registerUser(formData));
+    }
+  };
+
+  useEffect(() => {
+    if (success) {
+      alert("Registration successful!");
+      dispatch(clearState());
+      navigate("/login");
+    }
+  }, [success, dispatch, navigate]);
 
   return (
     <section className="vh-100 gradient-custom">
@@ -95,29 +70,28 @@ export default function SignupForm() {
           <div className="col-12 col-lg-9 col-xl-7">
             <div className="card shadow-2-strong card-registration custom-card">
               <div className="card-body p-4 p-md-5">
+                <h3 className="mb-4">Create an account</h3>
+
+                {Object.keys(validationErrors).length > 0 && (
+                  <div className="alert alert-danger">
+                    {Object.values(validationErrors).map((err, idx) => (
+                      <div key={idx}>{err}</div>
+                    ))}
+                  </div>
+                )}
+
+                {error && <div className="alert alert-danger">{error}</div>}
+
                 <form onSubmit={handleSubmit}>
-                  <h3 className="mb-4">Create an account</h3>
-
-                  {/* Show errors */}
-                  {Object.keys(errors).length > 0 && (
-                    <div className="alert alert-danger">
-                      {Object.values(errors).map((err, idx) => (
-                        <div key={idx}>{err}</div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Name + Surname */}
                   <div className="row">
                     <div className="col-md-6 mb-4">
                       <input
                         type="text"
                         name="name"
-                        placeholder="Enter your first name"
+                        placeholder="First name"
                         className="form-control form-control-lg"
-                        onChange={(e) =>
-                          setFormData({ ...formData, name: e.target.value })
-                        }
+                        value={formData.name}
+                        onChange={handleChange}
                       />
                       <label className="form-label">Name</label>
                     </div>
@@ -125,41 +99,36 @@ export default function SignupForm() {
                       <input
                         type="text"
                         name="surname"
-                        placeholder="Enter your surname"
+                        placeholder="Surname"
                         className="form-control form-control-lg"
-                        onChange={(e) =>
-                          setFormData({ ...formData, surname: e.target.value })
-                        }
+                        value={formData.surname}
+                        onChange={handleChange}
                       />
                       <label className="form-label">Surname</label>
                     </div>
                   </div>
 
-                  {/* Phone */}
                   <div className="mb-4">
                     <input
                       type="tel"
                       name="phone"
-                      placeholder="Enter cellphone number"
+                      placeholder="Cell number"
                       className="form-control form-control-lg"
-                      onChange={(e) =>
-                        setFormData({ ...formData, phone: e.target.value })
-                      }
+                      value={formData.phone}
+                      onChange={handleChange}
                     />
                     <label className="form-label">Cell Number</label>
                   </div>
 
-                  {/* Email + Password */}
                   <div className="row">
                     <div className="col-md-6 mb-4">
                       <input
                         type="email"
                         name="email"
-                        placeholder="Enter email"
+                        placeholder="Email"
                         className="form-control form-control-lg"
-                        onChange={(e) =>
-                          setFormData({ ...formData, email: e.target.value })
-                        }
+                        value={formData.email}
+                        onChange={handleChange}
                       />
                       <label className="form-label">Email Address</label>
                     </div>
@@ -167,11 +136,10 @@ export default function SignupForm() {
                       <input
                         type="password"
                         name="password"
-                        placeholder="Enter password"
+                        placeholder="Password"
                         className="form-control form-control-lg"
-                        onChange={(e) =>
-                          setFormData({ ...formData, password: e.target.value })
-                        }
+                        value={formData.password}
+                        onChange={handleChange}
                       />
                       <label className="form-label">Password</label>
                     </div>
@@ -181,28 +149,26 @@ export default function SignupForm() {
                         name="cpassword"
                         placeholder="Confirm password"
                         className="form-control form-control-lg"
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            cpassword: e.target.value,
-                          })
-                        }
+                        value={formData.cpassword}
+                        onChange={handleChange}
                       />
                       <label className="form-label">Confirm Password</label>
                     </div>
                   </div>
 
-                  {/* Submit */}
                   <div className="mt-4 pt-2">
-                    <button className="btn btn-primary btn-lg">Register</button>
+                    <button
+                      className="btn btn-primary btn-lg"
+                      type="submit"
+                      disabled={loading}
+                    >
+                      {loading ? "Registering..." : "Register"}
+                    </button>
                   </div>
                 </form>
 
                 <p className="mt-3">
-                  Already have an account?{" "}
-                  <Link to="/login" className="login-link">
-                    Login now!!
-                  </Link>
+                  Already have an account? <Link to="/login">Login now</Link>
                 </p>
               </div>
             </div>

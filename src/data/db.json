@@ -1,21 +1,11 @@
 {
   "users": [
     {
-      "id": "db5d",
+      "id": "fbed",
       "name": "Bongeka",
       "surname": "Bhungane",
       "email": "angelabhungane@gmail.com",
       "phone": "0832964212",
-      "password": "281220",
-      "cpassword": "281220",
-      "lists": []
-    },
-    {
-      "id": "7a4b",
-      "name": "Bongeka",
-      "surname": "Bhungane",
-      "email": "angelabhu@gmail.com",
-      "phone": "0694440189",
       "password": "281220",
       "cpassword": "281220",
       "lists": []
