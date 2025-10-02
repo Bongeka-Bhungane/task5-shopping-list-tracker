@@ -1,56 +1,92 @@
-import React, {useState} from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function SignupForm() {
-    const [formData, setFormData]= useState({
-      name: "",
-      surname: "",
-      email: "",
-      phone: "",
-      password: "",
-      cpassword: ""
-    });
+  const [formData, setFormData] = useState({
+    name: "",
+    surname: "",
+    email: "",
+    phone: "",
+    password: "",
+    cpassword: "",
+    lists: [],
+  });
 
-    const [errors, setErrors]= useState({})
-    const [valid, setValid] = useState(true)
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        let isvalid = true;
-        const validationErros={}
-        if(formData.name === "" || formData.name === null) {
-            isvalid = false;
-            validationErros.name = "first name is required"
-        }
-        if(formData.surname === "" || formData.surname === null) {
-            isvalid = false;
-            validationErros.surname = "surname is required"
-        }
-        if(formData.email=== "" || formData.email === null) {
-            isvalid = false;
-            validationErros.email = "email is required"
-        } else if(!/\S+@\S+\.\S/.test(formData.email)) {
-            isvalid = false;
-            validationErros.email = "please enter a valid email";
-        }
-        if(formData.password === "" || formData.password === null) {
-            isvalid = false;
-            validationErros.password = "password is required"
-        } else if(formData.password.length < 6) {
-            isvalid = false;
-            validationErros.password = "password at least be 6 characters long";
-        }
-        if(formData.cpassword !== formData.password) {
-            isvalid = false;
-            validationErros.cpassword = "passwords do not match";
-        }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let isValid = true;
+    const validationErrors = {};
 
-        setErrors (validationErros)
-        setValid (isvalid)
-        if(Object.keys(validationErros).length === 0) {
-            alert("succefully registered")
-        }
+    // ✅ Basic validations
+    if (!formData.name) {
+      isValid = false;
+      validationErrors.name = "First name is required";
     }
+    if (!formData.surname) {
+      isValid = false;
+      validationErrors.surname = "Surname is required";
+    }
+    if (!formData.phone) {
+      isValid = false;
+      validationErrors.phone = "Phone number is required";
+    }
+    if (!formData.email) {
+      isValid = false;
+      validationErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      isValid = false;
+      validationErrors.email = "Please enter a valid email";
+    }
+    if (!formData.password) {
+      isValid = false;
+      validationErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      isValid = false;
+      validationErrors.password = "Password must be at least 6 characters";
+    }
+    if (formData.cpassword !== formData.password) {
+      isValid = false;
+      validationErrors.cpassword = "Passwords do not match";
+    }
+
+    setErrors(validationErrors);
+
+    if (!isValid) return;
+
+   try {
+     // Check for duplicate email
+     const emailCheck = await axios.get(
+       `http://localhost:3000/users?email=${formData.email}`
+     );
+
+     if (emailCheck.data.length > 0) {
+       alert("Email is already registered!");
+       return;
+     }
+
+     // Check for duplicate phone
+     const phoneCheck = await axios.get(
+       `http://localhost:3000/users?phone=${formData.phone}`
+     );
+
+     if (phoneCheck.data.length > 0) {
+       alert("Phone number is already registered!");
+       return;
+     }
+
+     // ✅ Save user
+     await axios.post("http://localhost:3000/users", formData);
+     alert("Successfully registered 🎉");
+     navigate("/login");
+   } catch (err) {
+     console.error(err);
+     alert("Something went wrong, please try again.");
+   }
+  };
 
   return (
     <section className="vh-100 gradient-custom">
@@ -60,142 +96,103 @@ export default function SignupForm() {
             <div className="card shadow-2-strong card-registration custom-card">
               <div className="card-body p-4 p-md-5">
                 <form onSubmit={handleSubmit}>
-                  <h3 className="mb-4 pb-2 pb-md-0 mb-md-5">
-                    Create an account
-                  </h3>
-                  {valid ? (
-                    <></>
-                  ) : (
-                    <span>
-                      {errors.name}; {errors.surnname}; {errors.email};{" "}
-                      {errors.phone}; {errors.password}; {errors.cpassword};{" "}
-                    </span>
+                  <h3 className="mb-4">Create an account</h3>
+
+                  {/* Show errors */}
+                  {Object.keys(errors).length > 0 && (
+                    <div className="alert alert-danger">
+                      {Object.values(errors).map((err, idx) => (
+                        <div key={idx}>{err}</div>
+                      ))}
+                    </div>
                   )}
+
+                  {/* Name + Surname */}
                   <div className="row">
                     <div className="col-md-6 mb-4">
-                      <div className="form-outline">
-                        <input
-                          type="text"
-                          name="name"
-                          id="name"
-                          placeholder="Enter your first name"
-                          onChange={(event) =>
-                            setFormData({
-                              ...formData,
-                              name: event.target.value,
-                            })
-                          }
-                          className="form-control form-control-lg"
-                        />
-                        <label className="form-label" htmlFor="name">
-                          Name
-                        </label>
-                      </div>
+                      <input
+                        type="text"
+                        name="name"
+                        placeholder="Enter your first name"
+                        className="form-control form-control-lg"
+                        onChange={(e) =>
+                          setFormData({ ...formData, name: e.target.value })
+                        }
+                      />
+                      <label className="form-label">Name</label>
                     </div>
                     <div className="col-md-6 mb-4">
-                      <div className="form-outline">
-                        <input
-                          type="text"
-                          id="surname"
-                          name="surname"
-                          placeholder="Please enter surname "
-                          className="form-control form-control-lg"
-                          onChange={(event) =>
-                            setFormData({
-                              ...formData,
-                              surname: event.target.value,
-                            })
-                          }
-                        />
-                        <label className="form-label" htmlFor="surname">
-                          Surname
-                        </label>
-                      </div>
+                      <input
+                        type="text"
+                        name="surname"
+                        placeholder="Enter your surname"
+                        className="form-control form-control-lg"
+                        onChange={(e) =>
+                          setFormData({ ...formData, surname: e.target.value })
+                        }
+                      />
+                      <label className="form-label">Surname</label>
                     </div>
                   </div>
 
-                  {/* Cell Number */}
+                  {/* Phone */}
+                  <div className="mb-4">
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder="Enter cellphone number"
+                      className="form-control form-control-lg"
+                      onChange={(e) =>
+                        setFormData({ ...formData, phone: e.target.value })
+                      }
+                    />
+                    <label className="form-label">Cell Number</label>
+                  </div>
+
+                  {/* Email + Password */}
                   <div className="row">
-                    <div className="col-md-12 mb-4">
-                      <div className="form-outline">
-                        <input
-                          type="tel"
-                          id="cellNumber"
-                          placeholder="Please enter cellphone number "
-                          className="form-control form-control-lg"
-                        />
-                        <label className="form-label" htmlFor="cellNumber">
-                          Cell Number
-                        </label>
-                      </div>
+                    <div className="col-md-6 mb-4">
+                      <input
+                        type="email"
+                        name="email"
+                        placeholder="Enter email"
+                        className="form-control form-control-lg"
+                        onChange={(e) =>
+                          setFormData({ ...formData, email: e.target.value })
+                        }
+                      />
+                      <label className="form-label">Email Address</label>
+                    </div>
+                    <div className="col-md-6 mb-4">
+                      <input
+                        type="password"
+                        name="password"
+                        placeholder="Enter password"
+                        className="form-control form-control-lg"
+                        onChange={(e) =>
+                          setFormData({ ...formData, password: e.target.value })
+                        }
+                      />
+                      <label className="form-label">Password</label>
+                    </div>
+                    <div className="col-md-6 mb-4">
+                      <input
+                        type="password"
+                        name="cpassword"
+                        placeholder="Confirm password"
+                        className="form-control form-control-lg"
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            cpassword: e.target.value,
+                          })
+                        }
+                      />
+                      <label className="form-label">Confirm Password</label>
                     </div>
                   </div>
 
-                  {/* Email & Password */}
-                  <div className="row">
-                    <div className="col-md-6 mb-4">
-                      <div className="form-outline">
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          placeholder="Please enter email "
-                          className="form-control form-control-lg"
-                          onChange={(event) =>
-                            setFormData({
-                              ...formData,
-                              email: event.target.value,
-                            })
-                          }
-                        />
-                        <label className="form-label" htmlFor="email">
-                          Email Address
-                        </label>
-                      </div>
-                    </div>
-                    <div className="col-md-6 mb-4">
-                      <div className="form-outline">
-                        <input
-                          type="password"
-                          id="password"
-                          name="password"
-                          placeholder="Please enter password "
-                          className="form-control form-control-lg"
-                          onChange={(event) =>
-                            setFormData({
-                              ...formData,
-                              password: event.target.value,
-                            })
-                          }
-                        />
-                        <label className="form-label" htmlFor="password">
-                          Password
-                        </label>
-                      </div>
-                    </div>
-                    <div className="col-md-6 mb-4">
-                      <div className="form-outline">
-                        <input
-                          type="password"
-                          id="password"
-                          name="cpassword"
-                          placeholder="Please cornfirm password "
-                          className="form-control form-control-lg"
-                          onChange={(event) =>
-                            setFormData({
-                              ...formData,
-                              cpassword: event.target.value,
-                            })
-                          }
-                        />
-                        <label className="form-label" htmlFor="password">
-                          Cornfirm password
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Submit Button */}
+                  {/* Submit */}
                   <div className="mt-4 pt-2">
                     <button className="btn btn-primary btn-lg">Register</button>
                   </div>

@@ -1,4 +1,6 @@
 import { SiGnuprivacyguard } from "react-icons/si";
+// index.js or main.jsx
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 import Login from "./pages/Login";
 import Signup from "./pages/signup";

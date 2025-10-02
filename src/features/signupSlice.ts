@@ -4,17 +4,19 @@ import axios from "axios";
 export interface signupSlice {
   name: string;
   surname: string;
-  cellNumber: string;
+  phone: string;
   email: string;
   password: string;
+  cpassword: string
 }
 
 const initialState: signupSlice = {
-  name: "bongeka",
-  surname: "bhungane",
-  cellNumber: "0832964212",
-  password: "12345",
-  email: "angelabhungane@gmail.com",
+  name: "",
+  surname: "",
+  phone: "",
+  password: "",
+  cpassword: "",
+  email: "",
 };
 
 const signupSlice = createSlice({
