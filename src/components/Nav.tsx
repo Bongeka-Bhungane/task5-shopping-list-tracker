@@ -6,6 +6,7 @@ export default function Nav() {
     <div>
       <Link to="/signup" className=''> register</Link>
       <Link to="/login" className=''> Login</Link>
+      <Link to="/profile" className=''> Profile</Link>
     </div>
   )
 }
