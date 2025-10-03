@@ -1,9 +1,11 @@
+// components/UserProfile.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import bcrypt from "bcryptjs";
 
 // User interface
 interface User {
+  id: string;
   name: string;
   surname: string;
   email: string;
@@ -25,7 +27,6 @@ export default function UserProfile() {
   const [passwordError, setPasswordError] = useState<string>("");
   const [showPasswordFields, setShowPasswordFields] = useState<boolean>(false);
 
-  // Fetch users
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -70,21 +71,17 @@ export default function UserProfile() {
   const saveEdit = async () => {
     if (!editingEmail) return;
 
-    // Find current user
     const currentUser = users.find((u) => u.email === editingEmail);
-    if (!currentUser) return;
+    if (!currentUser) {
+      alert("User not found");
+      return;
+    }
 
-    // Validate password change if shown
-    if (
-      showPasswordFields &&
-      (passwordFields.newPassword || passwordFields.confirmPassword)
-    ) {
-      const oldPasswordMatches = bcrypt.compareSync(
-        passwordFields.oldPassword,
-        currentUser.password
-      );
-
-      if (!oldPasswordMatches) {
+    // Validate password change if user entered a new password
+    if (passwordFields.newPassword || passwordFields.confirmPassword) {
+      if (
+        !bcrypt.compareSync(passwordFields.oldPassword, currentUser.password)
+      ) {
         setPasswordError("Old password is incorrect");
         return;
       }
@@ -92,7 +89,6 @@ export default function UserProfile() {
         setPasswordError("New passwords do not match");
         return;
       }
-
       // Hash new password
       const salt = bcrypt.genSaltSync(10);
       editForm.password = bcrypt.hashSync(passwordFields.newPassword, salt);
@@ -100,12 +96,11 @@ export default function UserProfile() {
 
     try {
       const response = await axios.put<User>(
-        `http://localhost:3000/users/${editingEmail}`,
-        editForm
+        `http://localhost:3000/users/${currentUser.id}`,
+        { ...currentUser, ...editForm } // ✅ keep existing values, merge with edits
       );
-      setUsers(
-        users.map((u) => (u.email === editingEmail ? response.data : u))
-      );
+
+      setUsers(users.map((u) => (u.id === currentUser.id ? response.data : u)));
       cancelEdit();
       alert("Profile updated successfully!");
     } catch (err) {
@@ -114,53 +109,66 @@ export default function UserProfile() {
     }
   };
 
+
   return (
-    <div className="container my-4">
-      <h2 className="mb-4">User Profiles</h2>
-      <div className="row">
+    <div className="container my-5">
+      <h2 className="mb-4 text-center">User Profiles</h2>
+      <div className="row justify-content-center">
         {users.map((user) => (
-          <div key={user.email} className="col-md-6 mb-4">
-            <div className="card shadow-sm p-3 h-100">
+          <div
+            key={user.email}
+            className="col-12 col-sm-10 col-md-6 col-lg-4 mb-4 d-flex"
+          >
+            <div
+              className="card shadow-lg rounded-lg p-4 border-0 flex-fill"
+              style={{ backgroundColor: "#f9f9f9" }}
+            >
               {editingEmail === user.email ? (
                 <>
-                  <input
-                    type="text"
-                    className="form-control mb-2"
-                    value={editForm.name || ""}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, name: e.target.value })
-                    }
-                  />
-                  <input
-                    type="text"
-                    className="form-control mb-2"
-                    value={editForm.surname || ""}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, surname: e.target.value })
-                    }
-                  />
-                  <input
-                    type="email"
-                    className="form-control mb-2"
-                    value={editForm.email || ""}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, email: e.target.value })
-                    }
-                  />
-                  <input
-                    type="tel"
-                    className="form-control mb-2"
-                    value={editForm.phone || ""}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, phone: e.target.value })
-                    }
-                  />
+                  <div className="mb-3">
+                    <input
+                      type="text"
+                      className="form-control mb-2"
+                      placeholder="First Name"
+                      value={editForm.name || ""}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, name: e.target.value })
+                      }
+                    />
+                    <input
+                      type="text"
+                      className="form-control mb-2"
+                      placeholder="Surname"
+                      value={editForm.surname || ""}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, surname: e.target.value })
+                      }
+                    />
+                    <input
+                      type="email"
+                      className="form-control mb-2"
+                      placeholder="Email"
+                      value={editForm.email || ""}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, email: e.target.value })
+                      }
+                    />
+                    <input
+                      type="tel"
+                      className="form-control mb-2"
+                      placeholder="Phone"
+                      value={editForm.phone || ""}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, phone: e.target.value })
+                      }
+                    />
+                  </div>
 
                   <hr />
                   <button
-                    className="btn btn-outline-primary mb-2"
-                    onClick={() => setShowPasswordFields(!showPasswordFields)}
+                    className="btn btn-outline-primary mb-3"
                     type="button"
+                    onClick={() => setShowPasswordFields(!showPasswordFields)}
                   >
                     {showPasswordFields
                       ? "Hide Password Fields"
@@ -168,7 +176,7 @@ export default function UserProfile() {
                   </button>
 
                   {showPasswordFields && (
-                    <>
+                    <div className="mb-3">
                       <input
                         type="password"
                         className="form-control mb-2"
@@ -208,10 +216,10 @@ export default function UserProfile() {
                       {passwordError && (
                         <p className="text-danger">{passwordError}</p>
                       )}
-                    </>
+                    </div>
                   )}
 
-                  <div className="d-flex justify-content-between mt-2">
+                  <div className="d-flex justify-content-between mt-3">
                     <button className="btn btn-success" onClick={saveEdit}>
                       Save
                     </button>
@@ -222,13 +230,17 @@ export default function UserProfile() {
                 </>
               ) : (
                 <>
-                  <h5>
+                  <h5 className="mb-2 text-center">
                     {user.name} {user.surname}
                   </h5>
-                  <p>Email: {user.email}</p>
-                  <p>Phone: {user.phone}</p>
+                  <p className="mb-1 text-center">
+                    <strong>Email:</strong> {user.email}
+                  </p>
+                  <p className="mb-3 text-center">
+                    <strong>Phone:</strong> {user.phone}
+                  </p>
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-primary w-100"
                     onClick={() => startEdit(user)}
                   >
                     Edit Profile
