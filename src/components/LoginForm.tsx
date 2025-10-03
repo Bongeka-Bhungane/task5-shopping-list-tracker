@@ -1,56 +1,26 @@
-import axios from "axios";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../store"; // adjust paths
+import { loginUser } from "../features/loginSlice";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
-  const [errors, setErrors] = useState({});
-  const [valid, setValid] = useState(true);
-  const navigate = useNavigate()
+  const { user, error, loading } = useSelector(
+    (state: RootState) => state.LoginSlice
+  );
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    let isValid = true;
-    let validationErrors = {};
-
-    //  Basic validations
-    if (!formData.email) {
-      isValid = false;
-      validationErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      isValid = false;
-      validationErrors.email = "Please enter a valid email";
-    }
-    if (!formData.password) {
-      isValid = false;
-      validationErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      isValid = false;
-      validationErrors.password = "Password must be at least 6 characters";
-    }
-
-    axios
-      .get("http://localhost:3000/users")
-      .then((result) => {
-        result.data.map((user) => {
-          if (user.email === formData.email) {
-            if (user.password === formData.password) {
-              alert("you are logged in");
-              navigate('/main')
-            } else {
-              isValid = false;
-              validationErrors.password = "Wrong password; ";
-            }
-          }
-        });
-        setErrors(validationErrors);
-        setValid(isValid);
-      })
-      .catch((err) => console.log(err));
+    dispatch(loginUser(formData)).then((res: any) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        alert("You are logged in!");
+        navigate("/main");
+      }
+    });
   };
 
   return (
@@ -63,22 +33,15 @@ export default function LoginForm() {
                 <form onSubmit={handleSubmit}>
                   <h3 className="mb-4">Login</h3>
 
-                  {Object.keys(errors).length > 0 && (
-                    <div className="alert alert-danger">
-                      {Object.values(errors).map((err, idx) => (
-                        <div key={idx}>{err}</div>
-                      ))}
-                    </div>
-                  )}
+                  {error && <div className="alert alert-danger">{error}</div>}
 
-                  {/* Email + Password */}
                   <div className="row">
                     <div className="col-md-6 mb-4">
                       <input
                         type="email"
-                        name="email"
                         placeholder="Enter email"
                         className="form-control form-control-lg"
+                        value={formData.email}
                         onChange={(e) =>
                           setFormData({ ...formData, email: e.target.value })
                         }
@@ -88,9 +51,9 @@ export default function LoginForm() {
                     <div className="col-md-6 mb-4">
                       <input
                         type="password"
-                        name="password"
                         placeholder="Enter password"
                         className="form-control form-control-lg"
+                        value={formData.password}
                         onChange={(e) =>
                           setFormData({ ...formData, password: e.target.value })
                         }
@@ -99,14 +62,19 @@ export default function LoginForm() {
                     </div>
                   </div>
 
-                  {/* Submit */}
                   <div className="mt-4 pt-2">
-                    <button className="btn btn-primary btn-lg">Login</button>
+                    <button
+                      className="btn btn-primary btn-lg"
+                      type="submit"
+                      disabled={loading}
+                    >
+                      {loading ? "Logging in..." : "Login"}
+                    </button>
                   </div>
                 </form>
 
                 <p className="mt-3">
-                  Don't have an account?{" "}
+                  Don’t have an account?{" "}
                   <Link to="/signup" className="login-link">
                     Register now!!
                   </Link>
