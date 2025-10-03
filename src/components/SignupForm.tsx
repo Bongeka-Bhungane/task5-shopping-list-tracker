@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../reduxHooks";
-import {
-  registerUser,
-  clearState
-} from "../features/signupSlice";
+import { registerUser, clearState } from "../features/signupSlice";
 import type { RegisterFormData } from "../features/signupSlice";
+import bcrypt from "bcryptjs";
 
 export default function SignupForm() {
   const dispatch = useAppDispatch();
@@ -50,8 +48,18 @@ export default function SignupForm() {
     e.preventDefault();
     const errors = validate();
     setValidationErrors(errors);
+
     if (Object.keys(errors).length === 0) {
-      dispatch(registerUser(formData));
+      // 🔒 Encrypt password before dispatch
+      const salt = bcrypt.genSaltSync(10);
+      const hashedPassword = bcrypt.hashSync(formData.password, salt);
+
+      const newUser = {
+        ...formData,
+        password: hashedPassword,
+      };
+
+      dispatch(registerUser(newUser));
     }
   };
 

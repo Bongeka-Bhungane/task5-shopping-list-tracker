@@ -1,23 +1,13 @@
 {
   "users": [
     {
-      "id": "fbed",
+      "id": "120c",
       "name": "Bongeka",
       "surname": "Bhungane",
       "email": "angelabhungane@gmail.com",
       "phone": "0832964212",
-      "password": "281220",
+      "password": "$2b$10$yon6sJ2/CXVR2cRSx7JcVOeVJNiNBEPV3.lHVnGaW.a09FSZslFAC",
       "cpassword": "281220",
-      "lists": []
-    },
-    {
-      "id": "78d8",
-      "name": "beyonce",
-      "surname": "bftrd",
-      "email": "angela@gmail.com",
-      "phone": "0125489+66585",
-      "password": "010322",
-      "cpassword": "010322",
       "lists": []
     }
   ]

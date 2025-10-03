@@ -1,26 +1,46 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../store"; // adjust paths
-import { loginUser } from "../features/loginSlice";
+import type { AppDispatch, RootState } from "../../store";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import bcrypt from "bcryptjs";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const { user, error, loading } = useSelector(
-    (state: RootState) => state.LoginSlice
-  );
+  const { loading } = useSelector((state: RootState) => state.LoginSlice);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(loginUser(formData)).then((res: any) => {
-      if (res.meta.requestStatus === "fulfilled") {
-        alert("You are logged in!");
+
+    // 🔎 Fetch users and check login
+    axios
+      .get("http://localhost:3000/users")
+      .then((res) => {
+        const user = res.data.find((u: any) => u.email === formData.email);
+
+        if (!user) {
+          setErrors({ email: "Email not found" });
+          return;
+        }
+
+        const passwordMatch = bcrypt.compareSync(
+          formData.password,
+          user.password
+        );
+
+        if (!passwordMatch) {
+          setErrors({ password: "Invalid password" });
+          return;
+        }
+
+        alert("Login successful!");
         navigate("/main");
-      }
-    });
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -33,7 +53,14 @@ export default function LoginForm() {
                 <form onSubmit={handleSubmit}>
                   <h3 className="mb-4">Login</h3>
 
-                  {error && <div className="alert alert-danger">{error}</div>}
+                  {/* Show errors */}
+                  {Object.keys(errors).length > 0 && (
+                    <div className="alert alert-danger">
+                      {Object.values(errors).map((err, idx) => (
+                        <div key={idx}>{err}</div>
+                      ))}
+                    </div>
+                  )}
 
                   <div className="row">
                     <div className="col-md-6 mb-4">
