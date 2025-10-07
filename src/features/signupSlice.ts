@@ -11,7 +11,7 @@ export interface RegisterFormData {
   phone: string;
   password: string;
   cpassword: string;
-  lists: [];
+  shoppingLists: [];
 }
 
 // Define the state type

@@ -17,7 +17,7 @@ export default function SignupForm() {
     phone: "",
     password: "",
     cpassword: "",
-    lists: [],
+    shoppingLists: [],
   });
 
   const [validationErrors, setValidationErrors] = useState<

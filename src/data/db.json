@@ -1,14 +1,14 @@
 {
   "users": [
     {
-      "id": "8192",
+      "id": "6868",
       "name": "Bongeka",
       "surname": "Bhungane",
       "email": "angelabhungane@gmail.com",
       "phone": "0832964212",
-      "password": "$2b$10$F21zEgi1iJiX1QjWLvG6q.PT98C5UEOGtZvq8ScmRaB7OP9Ruvede",
+      "password": "$2b$10$JVR8WXdEAaFW.aCDYqk/0uJkvDYEAofPbFI2iGndqI0uHSuyZwGD2",
       "cpassword": "281220",
-      "lists": []
+      "shoppingLists": []
     }
   ]
 }
