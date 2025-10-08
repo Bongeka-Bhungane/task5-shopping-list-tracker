@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../store";
 import {
-  addShoppingList,
   fetchUserLists,
-  deleteShoppingList,
 } from "../features/shoppingListSlice";
 import ListCard from "../components/ListCard";
 import ListsForm from "../components/ListsForm";
@@ -14,6 +12,8 @@ export default function ListViewerPage() {
   const { lists, loading } = useSelector(
     (state: RootState) => state.shoppingList
   );
+  console.log("list...: ", lists);
+
   const [showModal, setShowModal] = useState(false);
 
   // ✅ Get logged-in user
@@ -25,39 +25,6 @@ export default function ListViewerPage() {
     if (userId) dispatch(fetchUserLists(userId));
   }, [dispatch, userId]);
 
-  // ✅ Add a new list
-  const handleAddList = (data: {
-    name: string;
-    category: string;
-    image: string;
-  }) => {
-    if (!userId) return alert("Please log in first.");
-
-    const newList = {
-      id: Date.now(),
-      listName: data.name,
-      category: data.category,
-      image: data.image,
-      status: "Not Started",
-      dateAdded: new Date().toLocaleDateString(),
-      items: [],
-      userId,
-    };
-
-    dispatch(addShoppingList(newList));
-    setShowModal(false);
-  };
-
-  // ✅ Delete a list
-  const handleDelete = (id: number) => {
-    if (!window.confirm("Are you sure you want to delete this list?")) return;
-    if (!userId) return;
-
-    dispatch(deleteShoppingList({ listId: id, userId })).then(() => {
-      // Refetch lists after deletion
-      dispatch(fetchUserLists(userId));
-    });
-  };
 
   if (loading) return <p className="text-center mt-5">Loading lists...</p>;
 
@@ -84,7 +51,7 @@ export default function ListViewerPage() {
         <div className="row">
           {lists.map((list) => (
             <div key={list.id} className="col-12 col-md-6 col-lg-4 mb-4">
-              <ListCard list={list} onDelete={() => handleDelete(list.id)} />
+              <ListCard list={list} />
             </div>
           ))}
         </div>
@@ -93,12 +60,8 @@ export default function ListViewerPage() {
       {/* MODAL */}
       {showModal && (
         <ListsForm
-          formData={{ name: "", category: "", image: "" }}
-          setFormData={() => {}}
-          handleAddList={(e) => {}}
-          handleImageChange={() => {}}
-          onClose={() => setShowModal(false)}
-          onSave={handleAddList} // optional: pass onSave if your form supports it
+          userId={userId}
+          onClose={() => setShowModal(false)} // optional: pass onSave if your form supports it
         />
       )}
     </div>

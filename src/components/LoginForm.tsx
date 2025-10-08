@@ -1,50 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import bcrypt from "bcryptjs";
+import { useAppDispatch, useAppSelector } from "../../reduxHooks";
+import { loginUser } from "../features/loginSlice";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const loading = useAppSelector((state) => state.Login.loading);
+  const isLoggedIn = useAppSelector((state) => state.Login.isLoggedIn);
 
-  // ✅ Make sure this matches your store key
-  const { loading } = useSelector((state: RootState) => state.Login);
+  console.log(isLoggedIn);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Reset errors
-    setErrors({});
-
-    try {
-      const res = await axios.get("http://localhost:3000/users");
-      const user = res.data.find((u: any) => u.email === formData.email);
-
-      if (!user) {
-        setErrors({ email: "Email not found" });
-        return;
-      }
-
-      const passwordMatch = bcrypt.compareSync(
-        formData.password,
-        user.password
-      );
-
-      if (!passwordMatch) {
-        setErrors({ password: "Invalid password" });
-        return;
-      }
-
-      alert(`Login successful! Welcome back, ${user.name || user.email}`);
-      navigate("/main");
-    } catch (err) {
-      console.error("Login error:", err);
-      setErrors({ general: "Something went wrong. Please try again later." });
-    }
-  };
+  useEffect(() => {
+    if (isLoggedIn) navigate("/main");
+  }, [isLoggedIn, navigate]);
 
   return (
     <section className="vh-100 gradient-custom">
@@ -53,7 +28,12 @@ export default function LoginForm() {
           <div className="col-12 col-lg-9 col-xl-7">
             <div className="card shadow-2-strong card-registration custom-card">
               <div className="card-body p-4 p-md-5">
-                <form onSubmit={handleSubmit}>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    dispatch(loginUser(formData));
+                  }}
+                >
                   <h3 className="mb-4">Login</h3>
 
                   {/* 🔴 Show validation or server errors */}

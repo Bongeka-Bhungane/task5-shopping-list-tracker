@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import { useAppDispatch } from "../../reduxHooks";
+import { addShoppingList } from "../features/shoppingListSlice";
 
 interface ListsFormProps {
   onClose: () => void;
-  onSave: (data: { name: string; category: string; image: string }) => void;
+  userId : string
 }
 
-export default function ListsForm({ onClose, onSave }: ListsFormProps) {
+export default function ListsForm({ onClose, userId }: ListsFormProps) {
   const [formData, setFormData] = useState({
     name: "",
     category: "",
@@ -24,9 +26,12 @@ export default function ListsForm({ onClose, onSave }: ListsFormProps) {
     }
   };
 
+  const dispatch = useAppDispatch();
+
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+    dispatch(addShoppingList({...formData, status:"", dateAdded:new Date(), userId:userId }))
   };
 
   return (

@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // API base URL
-const BASE_URL = "http://localhost:3000/users";
+const BASE_URL = "http://localhost:3000/shoppingLists";
 
 export interface Item {
   id: number;
@@ -11,13 +11,13 @@ export interface Item {
 }
 
 export interface ShoppingLists {
-  id: number;
-  listName: string;
+  id?: string;
+  name: string;
   category: string;
   image: string;
   status: string;
-  dateAdded: string;
-  items: Item[];
+  dateAdded: Date;
+  quantity?: number;
   userId: string;
 }
 
@@ -41,23 +41,15 @@ export const addShoppingList = createAsyncThunk<
 >("shoppingList/add", async (list, { rejectWithValue }) => {
   try {
     // 1️⃣ Fetch current user
-    const userRes = await axios.get(`${BASE_URL}/${list.userId}`);
+    const userRes = await axios.post(BASE_URL, list);
     const user = userRes.data;
 
-    if (!user) throw new Error("User not found");
-
-    // 2️⃣ Append new list
-    const updatedLists = [...user.shoppingLists, list];
-
-    // 3️⃣ Update user
-    await axios.put(`${BASE_URL}/${list.userId}`, {
-      ...user,
-      shoppingLists: updatedLists,
-    });
+    if (!user) return rejectWithValue("User not found..");
+    else return user;
 
     return list; // return the newly added list
-  } catch (err: any) {
-    return rejectWithValue(err.message || "Failed to add list");
+  } catch (err) {
+    return rejectWithValue((err as string) || "Failed to add list");
   }
 });
 
@@ -66,41 +58,30 @@ export const fetchUserLists = createAsyncThunk<ShoppingLists[], string>(
   "shoppingList/fetchByUser",
   async (userId, { rejectWithValue }) => {
     try {
-      const res = await axios.get(`${BASE_URL}/${userId}`);
-      return res.data.shoppingLists || [];
-    } catch (err: any) {
-      return rejectWithValue(err.message || "Failed to fetch lists");
+      const res = await axios.get(BASE_URL);
+
+      if (res) {
+        const data: ShoppingLists[] = res.data;
+        return (
+          data.filter((d) => {
+            return d.userId == userId;
+          }) || []
+        );
+      }
+
+      return [];
+    } catch (err) {
+      return rejectWithValue(err || "Failed to fetch lists");
     }
   }
 );
 
 // DELETE a list
-export const deleteShoppingList = createAsyncThunk<
-  number,
-  { listId: number; userId: string }
->(
-  "shoppingList/deleteList",
-  async ({ listId, userId }, { rejectWithValue }) => {
-    try {
-      // Fetch current user
-      const userRes = await axios.get(`${BASE_URL}/${userId}`);
-      const user = userRes.data;
-
-      // Filter out the deleted list
-      const updatedLists = user.shoppingLists.filter(
-        (l: ShoppingLists) => l.id !== listId
-      );
-
-      // Update user
-      await axios.put(`${BASE_URL}/${userId}`, {
-        ...user,
-        shoppingLists: updatedLists,
-      });
-
-      return listId;
-    } catch (err: any) {
-      return rejectWithValue(err.message || "Failed to delete list");
-    }
+export const deleteShoppingList = createAsyncThunk<string, string>(
+  "shoppingItems/delete",
+  async (id) => {
+    await axios.delete(`http://localhost:3000/shoppingLists/${id}`);
+    return id;
   }
 );
 
@@ -144,10 +125,11 @@ const shoppingListSlice = createSlice({
 
       // DELETE
       .addCase(deleteShoppingList.fulfilled, (state, action) => {
+        // action.payload is the string id of the deleted list
         state.lists = state.lists.filter((list) => list.id !== action.payload);
       })
       .addCase(deleteShoppingList.rejected, (state, action) => {
-        state.error = action.payload as string;
+        console.error("Delete failed:", action.payload);
       });
   },
 });
