@@ -1,51 +1,47 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import bcrypt from "bcryptjs";
 
-// Define a User type (based on your JSON server schema)
 export interface User {
   id: number;
   email: string;
   password: string;
   name?: string;
   surname?: string;
-  cell?: string;
+  phone?: string;
 }
 
-// Define slice state
 interface AuthState {
   user: User | null;
   loading: boolean;
   error: string | null;
 }
 
-// Initial state
 const initialState: AuthState = {
-  user: null,
+  user: JSON.parse(localStorage.getItem("user") || "null"),
   loading: false,
   error: null,
 };
 
-// Async thunk for login
 export const loginUser = createAsyncThunk<
-  User, // ✅ Return type
-  { email: string; password: string }, // ✅ Argument type
+  User,
+  { email: string; password: string },
   { rejectValue: string }
 >("auth/loginUser", async ({ email, password }, { rejectWithValue }) => {
   try {
     const response = await axios.get<User[]>("http://localhost:3000/users");
-
     const user = response.data.find(
       (u) => u.email === email && u.password === password
     );
 
-    if (user) {
-      return user; // ✅ returns User
+    if (user && bcrypt.compareSync(password, user.password)) {
+      return user;
     } else {
       return rejectWithValue("Invalid email or password");
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return rejectWithValue("Something went wrong");
   }
 });
@@ -56,6 +52,7 @@ const loginSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.user = null;
+      localStorage.removeItem("user");
     },
   },
   extraReducers: (builder) => {
@@ -66,11 +63,12 @@ const loginSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action: PayloadAction<User>) => {
         state.loading = false;
-        state.user = action.payload; // ✅ user is typed properly
+        state.user = action.payload;
+        localStorage.setItem("user", JSON.stringify(action.payload));
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || "Login failed";
+        state.error = action.payload ?? "Login failed";
       });
   },
 });

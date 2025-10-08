@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../store";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import bcrypt from "bcryptjs";
@@ -8,39 +8,42 @@ import bcrypt from "bcryptjs";
 export default function LoginForm() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const { loading } = useSelector((state: RootState) => state.LoginSlice);
+  // ✅ Make sure this matches your store key
+  const { loading } = useSelector((state: RootState) => state.Login);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 🔎 Fetch users and check login
-    axios
-      .get("http://localhost:3000/users")
-      .then((res) => {
-        const user = res.data.find((u: any) => u.email === formData.email);
+    // Reset errors
+    setErrors({});
 
-        if (!user) {
-          setErrors({ email: "Email not found" });
-          return;
-        }
+    try {
+      const res = await axios.get("http://localhost:3000/users");
+      const user = res.data.find((u: any) => u.email === formData.email);
 
-        const passwordMatch = bcrypt.compareSync(
-          formData.password,
-          user.password
-        );
+      if (!user) {
+        setErrors({ email: "Email not found" });
+        return;
+      }
 
-        if (!passwordMatch) {
-          setErrors({ password: "Invalid password" });
-          return;
-        }
+      const passwordMatch = bcrypt.compareSync(
+        formData.password,
+        user.password
+      );
 
-        alert("Login successful!");
-        navigate("/main");
-      })
-      .catch((err) => console.log(err));
+      if (!passwordMatch) {
+        setErrors({ password: "Invalid password" });
+        return;
+      }
+
+      alert(`Login successful! Welcome back, ${user.name || user.email}`);
+      navigate("/main");
+    } catch (err) {
+      console.error("Login error:", err);
+      setErrors({ general: "Something went wrong. Please try again later." });
+    }
   };
 
   return (
@@ -53,7 +56,7 @@ export default function LoginForm() {
                 <form onSubmit={handleSubmit}>
                   <h3 className="mb-4">Login</h3>
 
-                  {/* Show errors */}
+                  {/* 🔴 Show validation or server errors */}
                   {Object.keys(errors).length > 0 && (
                     <div className="alert alert-danger">
                       {Object.values(errors).map((err, idx) => (
@@ -75,6 +78,7 @@ export default function LoginForm() {
                       />
                       <label className="form-label">Email Address</label>
                     </div>
+
                     <div className="col-md-6 mb-4">
                       <input
                         type="password"

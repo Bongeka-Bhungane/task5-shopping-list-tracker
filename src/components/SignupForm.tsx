@@ -50,7 +50,6 @@ export default function SignupForm() {
     setValidationErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      // 🔒 Encrypt password before dispatch
       const salt = bcrypt.genSaltSync(10);
       const hashedPassword = bcrypt.hashSync(formData.password, salt);
 
