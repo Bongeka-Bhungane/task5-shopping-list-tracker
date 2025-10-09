@@ -82,7 +82,7 @@ export const addUser = createAsyncThunk<
 });
 
 //Slice
-const userSlice = createSlice({
+const profileSlice = createSlice({
   name: "user",
   initialState,
   reducers: {},
@@ -130,4 +130,4 @@ const userSlice = createSlice({
   },
 });
 
-export default userSlice.reducer;
+export default profileSlice.reducer;

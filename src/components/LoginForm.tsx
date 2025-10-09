@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import type { RootState } from "../../store";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import bcrypt from "bcryptjs";
 import { useAppDispatch, useAppSelector } from "../../reduxHooks";
 import { loginUser } from "../features/loginSlice";
 

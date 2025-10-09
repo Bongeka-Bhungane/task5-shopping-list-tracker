@@ -5,7 +5,7 @@ import {
   fetchUserProfile,
   updateUserProfile,
   type User,
-} from "../features/userSlice";
+} from "../features/prifileSlice";
 
 export default function UserProfile() {
   const dispatch = useAppDispatch();
