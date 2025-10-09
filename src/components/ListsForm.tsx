@@ -4,7 +4,7 @@ import { addShoppingList } from "../features/shoppingListSlice";
 
 interface ListsFormProps {
   onClose: () => void;
-  userId : string
+  userId: string;
 }
 
 export default function ListsForm({ onClose, userId }: ListsFormProps) {
@@ -14,24 +14,25 @@ export default function ListsForm({ onClose, userId }: ListsFormProps) {
     image: "",
   });
 
+  const dispatch = useAppDispatch();
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFormData({ ...formData, image: e.target.files[0].name });
-    }
-  };
-
-  const dispatch = useAppDispatch();
-
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(addShoppingList({...formData, status:"", dateAdded:new Date(), userId:userId }))
+    dispatch(
+      addShoppingList({
+        ...formData,
+        status: "",
+        dateAdded: new Date(),
+        userId: userId,
+      })
+    );
+    onClose();
   };
 
   return (
@@ -54,6 +55,7 @@ export default function ListsForm({ onClose, userId }: ListsFormProps) {
 
           <form onSubmit={handleSubmit}>
             <div className="modal-body">
+              {/* Name Field */}
               <div className="mb-3">
                 <label className="form-label">Name</label>
                 <input
@@ -66,6 +68,7 @@ export default function ListsForm({ onClose, userId }: ListsFormProps) {
                 />
               </div>
 
+              {/* Category Field */}
               <div className="mb-3">
                 <label className="form-label">Category</label>
                 <select
@@ -87,15 +90,34 @@ export default function ListsForm({ onClose, userId }: ListsFormProps) {
                 </select>
               </div>
 
+              {/* Image URL Field */}
               <div className="mb-3">
-                <label className="form-label">Image</label>
+                <label className="form-label">Image URL</label>
                 <input
-                  type="file"
+                  type="url"
                   name="image"
                   className="form-control"
-                  accept="image/*"
-                  onChange={handleImageChange}
+                  placeholder="Paste image URL here"
+                  value={formData.image}
+                  onChange={handleChange}
+                  required
                 />
+                {formData.image && (
+                  <div className="mt-2 text-center">
+                    <img
+                      src={formData.image}
+                      alt="Preview"
+                      style={{
+                        maxHeight: "150px",
+                        borderRadius: "8px",
+                        objectFit: "cover",
+                      }}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = "none";
+                      }}
+                    />
+                  </div>
+                )}
               </div>
             </div>
 

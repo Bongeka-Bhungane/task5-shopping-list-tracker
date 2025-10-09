@@ -76,6 +76,24 @@ export const fetchUserLists = createAsyncThunk<ShoppingLists[], string>(
   }
 );
 
+//update list 
+export const updateShoppingList = createAsyncThunk<
+  ShoppingLists,
+  ShoppingLists
+>("shoppingLists/update", async (list) => {
+  const findRes = await axios.get(
+    `http://localhost:3000/shoppingLists?listId=${list.id!}`
+  );
+  const existing = findRes.data && findRes.data[0];
+  if (!existing) throw new Error("Shopping list not found");
+  const dbId = existing.id;
+  const res = await axios.put(`http://localhost:3000/shoppingLists/${dbId}`, {
+    ...list,
+    id: dbId,
+  });
+  return res.data;
+});
+
 // DELETE a list
 export const deleteShoppingList = createAsyncThunk<string, string>(
   "shoppingItems/delete",
@@ -121,6 +139,14 @@ const shoppingListSlice = createSlice({
       .addCase(addShoppingList.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+
+      //update
+      .addCase(updateShoppingList.fulfilled, (state, action) => {
+        const index = state.lists.findIndex(
+          (l) => l.id === action.payload.id
+        );
+        if (index !== -1) state.lists[index] = action.payload;
       })
 
       // DELETE
