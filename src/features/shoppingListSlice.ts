@@ -81,16 +81,13 @@ export const updateShoppingList = createAsyncThunk<
   ShoppingLists,
   ShoppingLists
 >("shoppingLists/update", async (list) => {
-  const findRes = await axios.get(
-    `http://localhost:3000/shoppingLists?listId=${list.id!}`
+  if (!list.id) throw new Error("List ID is missing");
+
+  const res = await axios.put(
+    `http://localhost:3000/shoppingLists/${list.id}`,
+    list
   );
-  const existing = findRes.data && findRes.data[0];
-  if (!existing) throw new Error("Shopping list not found");
-  const dbId = existing.id;
-  const res = await axios.put(`http://localhost:3000/shoppingLists/${dbId}`, {
-    ...list,
-    id: dbId,
-  });
+
   return res.data;
 });
 
@@ -143,12 +140,11 @@ const shoppingListSlice = createSlice({
 
       //update
       .addCase(updateShoppingList.fulfilled, (state, action) => {
-        const index = state.lists.findIndex(
-          (l) => l.id === action.payload.id
-        );
-        if (index !== -1) state.lists[index] = action.payload;
-      })
-
+  const index = state.lists.findIndex((l) => l.id === action.payload.id);
+  if (index !== -1) {
+    state.lists[index] = action.payload;
+  }
+})
       // DELETE
       .addCase(deleteShoppingList.fulfilled, (state, action) => {
         // action.payload is the string id of the deleted list
