@@ -5,9 +5,13 @@ import {
   fetchUserProfile,
   updateUserProfile,
   type User,
-} from "../features/prifileSlice";
+} from "../features/profileSlice";
 
-export default function UserProfile() {
+interface UserProfileProps {
+  userId: number; // Pass the user ID as a prop
+}
+
+export default function UserProfile({ userId }: UserProfileProps) {
   const dispatch = useAppDispatch();
   const { user, loading, error } = useAppSelector((state) => state.user);
 
@@ -21,10 +25,10 @@ export default function UserProfile() {
   const [passwordError, setPasswordError] = useState("");
   const [showPasswordFields, setShowPasswordFields] = useState(false);
 
-  // 🚀 Fetch profile of user with ID = 8192 (you can pass dynamic ID later)
+  // Fetch any user by ID dynamically
   useEffect(() => {
-    dispatch(fetchUserProfile(8192));
-  }, [dispatch]);
+    dispatch(fetchUserProfile(userId));
+  }, [dispatch, userId]);
 
   if (loading) return <p>Loading user...</p>;
   if (error) return <p className="text-danger">{error}</p>;
@@ -69,7 +73,6 @@ export default function UserProfile() {
         setPasswordError("New passwords do not match");
         return;
       }
-      // Hash new password
       const salt = bcrypt.genSaltSync(10);
       editForm.password = bcrypt.hashSync(passwordFields.newPassword, salt);
     }

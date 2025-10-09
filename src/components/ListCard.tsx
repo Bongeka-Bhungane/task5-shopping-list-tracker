@@ -5,6 +5,7 @@ import {
   deleteShoppingList,
   updateShoppingList,
 } from "../features/shoppingListSlice";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   list: ShoppingLists;
@@ -12,6 +13,7 @@ interface Props {
 
 export default function ListCard({ list }: Props) {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   // Modal visibility
   const [showModal, setShowModal] = useState(false);
@@ -131,6 +133,13 @@ export default function ListCard({ list }: Props) {
             onClick={() => handleDelete(list.id!)}
           >
             Delete
+          </button>
+          <button
+            type="button" // important! prevents form submission
+            className="btn btn-success mt-2"
+            onClick={() => navigate("/items")}
+          >
+            View
           </button>
         </div>
       </div>

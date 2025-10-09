@@ -4,7 +4,7 @@ import axios, { AxiosError } from "axios";
 
 const API_URL = "http://localhost:3000/users";
 
-//User Type
+// User Type
 export interface User {
   id: number;
   name: string;
@@ -14,7 +14,7 @@ export interface User {
   password?: string;
 }
 
-//Slice State
+// Slice State
 interface UserState {
   user: User | null;
   loading: boolean;
@@ -27,9 +27,7 @@ const initialState: UserState = {
   error: null,
 };
 
-// Thunks 
-
-// Fetch user by ID
+// Fetch user by ID dynamically
 export const fetchUserProfile = createAsyncThunk<
   User,
   number,
@@ -46,7 +44,7 @@ export const fetchUserProfile = createAsyncThunk<
   }
 });
 
-// Update user by ID
+// Update user
 export const updateUserProfile = createAsyncThunk<
   User,
   User,
@@ -66,7 +64,7 @@ export const updateUserProfile = createAsyncThunk<
   }
 });
 
-// Add a new user (signup)
+// Add user
 export const addUser = createAsyncThunk<
   User,
   Omit<User, "id">,
@@ -81,7 +79,7 @@ export const addUser = createAsyncThunk<
   }
 });
 
-//Slice
+// Slice
 const profileSlice = createSlice({
   name: "user",
   initialState,

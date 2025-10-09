@@ -2,11 +2,11 @@
   "users": [
     {
       "id": "d505",
-      "name": "Bongeka",
-      "surname": "Bhungane",
+      "name": "Bongy",
+      "surname": "Bhuns",
       "email": "angelabhungane@gmail.com",
-      "phone": "0832964212",
-      "password": "$2b$10$ldlhG4rYF014HRhe016VnedXhvkP187Oe20hrGxKNeNtaz6kNL9tu",
+      "phone": "0832964221",
+      "password": "$2b$10$DHcC7wQIQ3kA06K1RTZHhOzHGzYwEiwAYbdsa6xqvq8P3aIgbrjJG",
       "cpassword": "281220"
     },
     {
@@ -30,15 +30,6 @@
   ],
   "shoppingLists": [
     {
-      "id": "d5f4",
-      "name": "pinky",
-      "category": "Ingredients",
-      "image": "https://media.istockphoto.com/id/2234343977/photo/chocolate-chip-cookies-with-recipe.webp?a=1&b=1&s=612x612&w=0&k=20&c=6Lo0LlvA3KGV7oYKE7ofjtv8IZfyiSpmxCI1GA8RmCg=",
-      "status": "",
-      "dateAdded": "2025-10-09T09:16:15.639Z",
-      "userId": "d505"
-    },
-    {
       "id": "41da",
       "name": "Bongeka",
       "category": "School",
@@ -55,6 +46,24 @@
       "status": "",
       "dateAdded": "2025-10-09T08:25:37.382Z",
       "userId": "fd94"
+    },
+    {
+      "id": "fc5e",
+      "name": "sands",
+      "category": "Renovation",
+      "image": "https://media.istockphoto.com/id/1180990099/photo/paint-brush-and-open-paint-can-with-on-pastel-background-top-view-copy-space-appartment.webp?a=1&b=1&s=612x612&w=0&k=20&c=xVo8v0Ml6qaLTc_bZleEJzRdPeGhS2bkiQmPxoAFK_I=",
+      "status": "",
+      "dateAdded": "2025-10-09T09:55:50.758Z",
+      "userId": "d505"
+    },
+    {
+      "id": "4dc1",
+      "name": "figma",
+      "category": "Supplies",
+      "image": "https://media.istockphoto.com/id/2167844412/photo/hand-worker-and-tablet-for-shipping-outdoor-for-cargo-crane-inventory-inspection-and-delivery.webp?a=1&b=1&s=612x612&w=0&k=20&c=SzETKQ8w_eKj2fh-Ob1eMjMxMxnBB74dfqhHfvAMJPI=",
+      "status": "",
+      "dateAdded": "2025-10-09T10:55:09.694Z",
+      "userId": "d505"
     }
   ]
 }

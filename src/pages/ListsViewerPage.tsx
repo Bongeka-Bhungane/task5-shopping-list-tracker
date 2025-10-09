@@ -6,6 +6,7 @@ import {
 } from "../features/shoppingListSlice";
 import ListCard from "../components/ListCard";
 import ListsForm from "../components/ListsForm";
+import Nav from "../components/Nav";
 
 export default function ListViewerPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -33,12 +34,7 @@ export default function ListViewerPage() {
       {/* HEADER */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>My Shopping Lists</h2>
-        <button
-          className="btn btn-success btn-lg"
-          onClick={() => setShowModal(true)}
-        >
-          + Add New List
-        </button>
+        <Nav />
       </div>
 
       {/* LISTS */}
@@ -56,6 +52,13 @@ export default function ListViewerPage() {
           ))}
         </div>
       )}
+
+      <button
+        className="btn btn-success btn-lg"
+        onClick={() => setShowModal(true)}
+      >
+        + Add New List
+      </button>
 
       {/* MODAL */}
       {showModal && (
