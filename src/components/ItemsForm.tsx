@@ -17,19 +17,19 @@ export default function ItemsForm() {
             required
           />
         </div>
+
         <div className="mb-3">
           <label htmlFor="itemName" className="form-label">
-            Notes
+            Quantity 
           </label>
           <input
-            type="text"
+            type="Number"
             className="form-control"
             id="itemNotes"
             name="itemNotes"
             placeholder="optional notes"
           />
         </div>
-
         <div className="mb-3">
           <label htmlFor="itemCategory" className="form-label">
             Category
@@ -70,7 +70,7 @@ export default function ItemsForm() {
           </label>
         </div>
 
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-success">
           Add Item
         </button>
       </form>

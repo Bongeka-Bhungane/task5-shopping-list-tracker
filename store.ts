@@ -3,6 +3,7 @@ import authReducer from "./src/features/loginSlice";
 import registerReducer from "./src/features/signupSlice";
 import profileReducer from "./src/features/profileSlice";
 import shoppingListReducer from "./src/features/shoppingListSlice";
+import itemReducer from "./src/features/itemSlice"
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     register: registerReducer,
     user: profileReducer,
     shoppingList: shoppingListReducer,
+    newItems: itemReducer,
   },
 });
 
