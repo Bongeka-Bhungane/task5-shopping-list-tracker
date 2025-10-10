@@ -66,5 +66,14 @@
       "userId": "d505"
     }
   ],
-  "items": []
+  "items": [
+    {
+      "id": "91623192-33c1-4ff7-94e9-ffa1ff9af8f3",
+      "name": "shampoo",
+      "quantity": 5,
+      "notes": "by at clicks",
+      "category": "hair",
+      "image": "https://images.unsplash.com/photo-1759928222798-63e73f690563?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx8ZW58MHx8fHx8"
+    }
+  ]
 }

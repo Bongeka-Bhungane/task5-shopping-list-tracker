@@ -11,7 +11,7 @@ export const store = configureStore({
     register: registerReducer,
     user: profileReducer,
     shoppingList: shoppingListReducer,
-    newItems: itemReducer,
+    addItem: itemReducer,
   },
 });
 
