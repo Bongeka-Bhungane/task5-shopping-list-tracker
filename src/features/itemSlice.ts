@@ -3,7 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // ITEM INTERFACE
-export interface Item {
+export interface Items {
   id: string;
   name: string;
   quantity: number;
@@ -15,7 +15,7 @@ export interface Item {
 
 // STATE INTERFACE
 export interface ItemState {
-  items: Item[];
+  items: Items[];
   loading: boolean;
   error: string | null;
 }
@@ -38,28 +38,35 @@ function getErrorMessage(error: unknown): string {
   return String(error);
 }
 
-// Fetch all items for a specific user
-export const fetchItems = createAsyncThunk<Item[], string>(
+// Fetch all items for a specific list
+export const fetchItems = createAsyncThunk<Items[], string>(
   "items/fetchAll",
-  async (userId, { rejectWithValue }) => {
+  async (listId, { rejectWithValue }) => {
     try {
-      const res = await axios.get(`http://localhost:3000/items?userId=${userId}`);
+      const res = await axios.get(
+        `http://localhost:3000/items?listId=${listId}`
+      );
+      console.log("Fetched items:", res.data); // 👈 Add this
       return res.data;
     } catch (error: unknown) {
-      return rejectWithValue(getErrorMessage(error));
+      return rejectWithValue(
+        error instanceof Error ? error.message : String(error)
+      );
     }
   }
 );
 
+
+
 // Add a new item
 export const addItem = createAsyncThunk<
-  Item,
-  Omit<Item, "id" | "dateAdded" | "status">
+  Items,
+  Omit<Items, "id" | "dateAdded" | "status">
 >(
   "items/add",
   async (newItem, { rejectWithValue }) => {
     try {
-      const itemToAdd: Item = {
+      const itemToAdd: Items = {
         ...newItem,
         id: crypto.randomUUID(),
       };
@@ -72,7 +79,7 @@ export const addItem = createAsyncThunk<
 );
 
 // Update an existing item
-export const updateItem = createAsyncThunk<Item, Item>(
+export const updateItem = createAsyncThunk<Items, Items>(
   "items/update",
   async (item, { rejectWithValue }) => {
     try {
@@ -109,7 +116,7 @@ const itemSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchItems.fulfilled, (state, action: PayloadAction<Item[]>) => {
+      .addCase(fetchItems.fulfilled, (state, action: PayloadAction<Items[]>) => {
         state.loading = false;
         state.items = action.payload;
       })
@@ -123,7 +130,7 @@ const itemSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(addItem.fulfilled, (state, action: PayloadAction<Item>) => {
+      .addCase(addItem.fulfilled, (state, action: PayloadAction<Items>) => {
         state.loading = false;
         state.items.push(action.payload);
       })
@@ -133,7 +140,7 @@ const itemSlice = createSlice({
       })
 
       // UPDATE
-      .addCase(updateItem.fulfilled, (state, action: PayloadAction<Item>) => {
+      .addCase(updateItem.fulfilled, (state, action: PayloadAction<Items>) => {
         const index = state.items.findIndex((i) => i.id === action.payload.id);
         if (index !== -1) state.items[index] = action.payload;
       })
