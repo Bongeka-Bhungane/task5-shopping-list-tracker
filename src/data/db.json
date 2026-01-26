@@ -26,6 +26,15 @@
       "phone": "08329642102",
       "password": "$2b$10$DNmaJIuOSjlRx63gKmOH9.o2nfwXdG1bNF5OuWlBtRdgrkYgvFN9G",
       "cpassword": "123456"
+    },
+    {
+      "id": "4c86",
+      "name": "Bongeka",
+      "surname": "Bhungane",
+      "email": "angelabhungane@email.com",
+      "phone": "0832964218",
+      "password": "$2b$10$Ng5mLvSdiam0WaKWURZJYu9fKK/bi7ZL/6P.O7kduymDedho1XFLq",
+      "cpassword": "123456"
     }
   ],
   "shoppingLists": [
@@ -64,6 +73,15 @@
       "status": "",
       "dateAdded": "2025-10-09T10:55:09.694Z",
       "userId": "d505"
+    },
+    {
+      "id": "d341",
+      "name": "Bongeka",
+      "category": "School",
+      "image": "https://plus.unsplash.com/premium_photo-1663127354216-8d06d01b8775?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8YmFjayUyMHRvJTIwc2Nob29sJTIwcGljdXJlc3xlbnwwfHwwfHx8MA%3D%3D",
+      "status": "",
+      "dateAdded": "2026-01-26T09:31:42.516Z",
+      "userId": "4c86"
     }
   ],
   "items": [
@@ -80,6 +98,46 @@
       "id": "afb96d01-5c15-44e6-ad19-84982aa65a9e",
       "name": "eggs",
       "quantity": 18,
+      "notes": "",
+      "category": "Food",
+      "image": "/images/food.png"
+    },
+    {
+      "id": "b4a81cd3-b9b9-4389-9c84-daff4821da5a",
+      "name": "oo",
+      "quantity": 1,
+      "notes": "",
+      "category": "Food",
+      "image": "/images/food.png"
+    },
+    {
+      "id": "2102401f-40c9-4d2d-836a-5f70828c4d54",
+      "name": "oo",
+      "quantity": 1,
+      "notes": "",
+      "category": "Food",
+      "image": "/images/food.png"
+    },
+    {
+      "id": "380d3923-a628-41bf-9056-84caa2039f6b",
+      "name": "oo",
+      "quantity": 1,
+      "notes": "",
+      "category": "Food",
+      "image": "/images/food.png"
+    },
+    {
+      "id": "05139df6-3700-4c09-927d-3f0684485310",
+      "name": "oo",
+      "quantity": 1,
+      "notes": "",
+      "category": "Food",
+      "image": "/images/food.png"
+    },
+    {
+      "id": "e89273bb-fa68-4fc5-bdd7-f4fd15d90134",
+      "name": "oo",
+      "quantity": 1,
       "notes": "",
       "category": "Food",
       "image": "/images/food.png"

@@ -12,35 +12,53 @@ export default function ItemCard({ item }: ItemCardProps) {
   const dispatch = useDispatch<AppDispatch>();
   const [editing, setEditing] = useState(false);
   const [updatedName, setUpdatedName] = useState(item.name);
-  const [done, setDone] = useState(false);
+  const [updatedQty, setUpdatedQty] = useState(item.quantity);
+  const [done, setDone] = useState(false); // local only, can be updated to backend if needed
 
-  const handleDelete = () => {
-    dispatch(deleteItem(item.id));
-  };
+  const handleDelete = () => dispatch(deleteItem(item.id));
 
   const handleUpdate = () => {
-    dispatch(updateItem({ ...item, name: updatedName }));
+    dispatch(updateItem({ ...item, name: updatedName, quantity: updatedQty }));
     setEditing(false);
   };
 
-  const toggleDone = () => setDone(!done);
+  const toggleDone = () => {
+    setDone(!done);
+    // Optional: update backend
+    // dispatch(updateItem({ ...item, done: !done }));
+  };
 
   return (
-    <div className="border rounded-xl p-4 shadow-sm bg-gray-50 flex items-center justify-between gap-4">
-      <input type="checkbox" checked={done} onChange={toggleDone} />
+    <div className="border rounded-xl p-4 shadow-md bg-white flex items-center gap-4 hover:shadow-lg transition-shadow">
+      <input
+        type="checkbox"
+        checked={done}
+        onChange={toggleDone}
+        className="h-5 w-5"
+      />
+
       <img
         src={item.image}
         alt={item.category}
-        className="h-16 w-16 object-contain"
+        className="h-16 w-16 object-contain rounded-lg"
       />
 
       <div className="flex-1">
         {editing ? (
-          <input
-            className="border p-1 rounded-md w-full"
-            value={updatedName}
-            onChange={(e) => setUpdatedName(e.target.value)}
-          />
+          <>
+            <input
+              className="border p-1 rounded-md w-full mb-1"
+              value={updatedName}
+              onChange={(e) => setUpdatedName(e.target.value)}
+            />
+            <input
+              type="number"
+              className="border p-1 rounded-md w-20"
+              value={updatedQty}
+              min={1}
+              onChange={(e) => setUpdatedQty(Number(e.target.value))}
+            />
+          </>
         ) : (
           <p
             className={`font-semibold ${
@@ -51,12 +69,12 @@ export default function ItemCard({ item }: ItemCardProps) {
           </p>
         )}
         <p className="text-sm text-gray-500">
-          {item.category} | Qty: {item.quantity}
+          {item.category} | Qty: {updatedQty}
         </p>
         {item.notes && <p className="text-xs italic">{item.notes}</p>}
       </div>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex gap-2 flex-col md:flex-row">
         {editing ? (
           <button
             className="text-sm text-green-600 hover:text-green-800"

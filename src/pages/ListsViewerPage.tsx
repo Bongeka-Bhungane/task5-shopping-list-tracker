@@ -6,7 +6,7 @@ import {
 } from "../features/shoppingListSlice";
 import ListCard from "../components/ListCard";
 import ListsForm from "../components/ListsForm";
-import Nav from "../components/Nav";
+import LoggedNav from "../components/LoggedNav";
 
 export default function ListViewerPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -34,7 +34,7 @@ export default function ListViewerPage() {
       {/* HEADER */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>My Shopping Lists</h2>
-        <Nav />
+        <LoggedNav />
       </div>
 
       {/* LISTS */}
