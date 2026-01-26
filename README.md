@@ -1,73 +1,73 @@
-# React + TypeScript + Vite
+# Shopping List App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple and user-friendly shopping list application built with React, Redux, and JSON Server.
+The app allows users to manage their shopping items by adding, viewing, updating, and deleting items, with data persisted using a mock REST API.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Add items to the shopping list
 
-## React Compiler
+- View all shopping list items
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Update item details
 
-## Expanding the ESLint configuration
+- Delete items from the list
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- State management using Redux
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Mock backend powered by JSON Server
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Tech Stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- React – Frontend UI library
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Redux – State management
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- React Redux – Official Redux bindings for React
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- JSON Server – Mock REST API backend
+
+- typescript
+
+- bootstrap styling
+
+### Performance
+- Fast loading with optimized components
+- Smooth animations and transitions
+- Efficient state management
+- Responsive design (320px, 480px, 768px, 1024px, 1200px)
+
+
+## Installation
+
+### Prerequisites
+- Node.js (version 18 or higher)
+- npm or yarn package manager
+
+### Setup Instructions
+
+1. **Clone or download the project**
+   ```bash
+   git clone <https://github.com/Bongeka-Bhungane/task5-shopping-list-tracker>
+   cd wearher-app
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+### Database/ backend
+1. direct to the database folder
+ ```bash
+   cd src/dta
+   ```
+
+2. run the server
+```bash
+   npx json-server db.json
+   ```
