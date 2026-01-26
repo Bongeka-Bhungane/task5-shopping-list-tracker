@@ -1,6 +1,39 @@
 # Shopping List App
 
-### ⚡ Performance
+## Shopping List App
+
+A simple and user-friendly shopping list application built with React, Redux, and JSON Server.
+The app allows users to manage their shopping items by adding, viewing, updating, and deleting items, with data persisted using a mock REST API.
+
+## Features
+
+- Add items to the shopping list
+
+- View all shopping list items
+
+- Update item details
+
+- Delete items from the list
+
+- State management using Redux
+
+- Mock backend powered by JSON Server
+
+## Tech Stack
+
+- React – Frontend UI library
+
+- Redux – State management
+
+- React Redux – Official Redux bindings for React
+
+- JSON Server – Mock REST API backend
+
+- typescript
+
+- CSS – Styling
+
+### Performance
 - Fast loading with optimized components
 - Smooth animations and transitions
 - Efficient state management
