@@ -49,7 +49,6 @@ The app allows users to manage their shopping items by adding, viewing, updating
 1. **Clone or download the project**
    ```bash
    git clone <https://github.com/Bongeka-Bhungane/task5-shopping-list-tracker>
-   cd wearher-app
    ```
 
 2. **Install dependencies**
@@ -64,7 +63,7 @@ The app allows users to manage their shopping items by adding, viewing, updating
 ### Database/ backend
 1. direct to the database folder
  ```bash
-   cd src/dta
+   cd src/data
    ```
 
 2. run the server
