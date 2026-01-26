@@ -63,5 +63,14 @@ The app allows users to manage their shopping items by adding, viewing, updating
    ```bash
    npm run dev
    ```
+### Database/ backend
+1. direct to the database folder
+ ```bash
+   cd src/dta
+   ```
 
+2. run the server
+```bash
+   npx json-server db.json
+   ```
    
