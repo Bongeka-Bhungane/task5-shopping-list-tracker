@@ -28,7 +28,7 @@ export default function ItemsForm({ listId }: ItemsFormProps) {
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState<number>(1);
   const [notes, setNotes] = useState("");
-  const [category, setCategory] = useState("Food");
+  const [category, setCategory] = useState("");
 
   const imagePreview = categoryImages[category];
 

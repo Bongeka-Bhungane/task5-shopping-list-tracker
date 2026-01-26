@@ -2,10 +2,10 @@
   "users": [
     {
       "id": "d505",
-      "name": "Bongy",
-      "surname": "Bhuns",
+      "name": "Bongeka",
+      "surname": "Bhungane",
       "email": "angelabhungane@gmail.com",
-      "phone": "0832964221",
+      "phone": "0832964212",
       "password": "$2b$10$DHcC7wQIQ3kA06K1RTZHhOzHGzYwEiwAYbdsa6xqvq8P3aIgbrjJG",
       "cpassword": "281220"
     },
@@ -20,9 +20,9 @@
     },
     {
       "id": "6c16",
-      "name": "Bongeka",
+      "name": "lulonk",
       "surname": "Bhungane",
-      "email": "ms@gmail.com",
+      "email": "lulonk@gmail.com",
       "phone": "08329642102",
       "password": "$2b$10$DNmaJIuOSjlRx63gKmOH9.o2nfwXdG1bNF5OuWlBtRdgrkYgvFN9G",
       "cpassword": "123456"
@@ -58,9 +58,9 @@
     },
     {
       "id": "4dc1",
-      "name": "list",
-      "category": "Renovation",
-      "image": "https://media.istockphoto.com/id/1180990099/photo/paint-brush-and-open-paint-can-with-on-pastel-background-top-view-copy-space-appartment.webp?a=1&b=1&s=612x612&w=0&k=20&c=xVo8v0Ml6qaLTc_bZleEJzRdPeGhS2bkiQmPxoAFK_I=",
+      "name": "weekly groceries",
+      "category": "Grocery",
+      "image": "https://media.istockphoto.com/id/1393629140/photo/empty-supermarket-aisle-with-refrigerators.jpg?s=1024x1024&w=is&k=20&c=WzzEh5lSSpAIqZ9ag2Mz3POyq0pFd5ErmCiLbsyeTJs=",
       "status": "",
       "dateAdded": "2025-10-09T10:55:09.694Z",
       "userId": "d505"
@@ -68,97 +68,19 @@
   ],
   "items": [
     {
-      "id": "3584778a-0ba1-496d-806d-c704a75af6ca",
-      "name": "jam",
-      "quantity": 1,
-      "notes": "by at pnp",
-      "category": "food",
-      "image": "https://via.placeholder.com/150?text=Food",
-      "listId": "4dc1"
-    },
-    {
-      "id": "f288a137-3c23-4a19-be2a-9db626ba45ff",
-      "name": "dddd",
-      "quantity": 1,
-      "notes": "ddddd",
-      "category": "dairy",
-      "image": "https://via.placeholder.com/150?text=Dairy",
-      "listId": "4dc1"
-    },
-    {
-      "id": "4346a5a8-7e48-460f-b509-aaf089a61c0c",
-      "name": "eeeee",
-      "quantity": 1,
-      "notes": "eeee",
-      "category": "food",
-      "image": "https://via.placeholder.com/150?text=Food",
-      "listId": "4dc1"
-    },
-    {
-      "id": "eb68db23-3a74-4a18-9141-89af8204cfea",
-      "name": "cccc",
-      "quantity": 1,
-      "notes": "cccc",
-      "category": "veggies",
-      "image": "https://via.placeholder.com/150?text=Veggies",
-      "listId": "4dc1"
-    },
-    {
-      "id": "aba3c6e1-396d-43b4-b6b2-b59aa3c8fa4b",
-      "name": "wwwww",
-      "quantity": 1,
-      "notes": "wwwww",
-      "category": "deodorant",
-      "image": "https://via.placeholder.com/150?text=Deodorant",
-      "listId": "4dc1"
-    },
-    {
-      "id": "c93ebb95-b6b6-4424-9ca2-4e6776317f9d",
-      "name": "qqqqq",
-      "quantity": 1,
-      "notes": "qqq",
-      "category": "hair",
-      "image": "https://via.placeholder.com/150?text=Hair",
-      "listId": "4dc1"
-    },
-    {
-      "id": "80b01b34-045e-40e8-8bb3-60dd7fded3dd",
-      "name": "qqqqqq",
-      "quantity": 1,
-      "notes": "qqqqq",
-      "category": "veggies",
-      "image": "https://via.placeholder.com/150?text=Veggies",
-      "listId": "4dc1"
-    },
-    {
-      "id": "3078978c-13a0-4937-a488-4d940485702a",
-      "name": "pepper",
-      "quantity": 4,
-      "notes": "",
-      "category": "Veggies",
-      "image": "/images/veggies.png"
-    },
-    {
-      "id": "031a1d77-d400-4ddb-94cb-4808976e1915",
+      "id": "12d8067e-5673-43fe-b98b-3faa855e2c18",
       "name": "eggs",
-      "quantity": 1,
+      "quantity": 30,
       "notes": "",
-      "category": "Food",
-      "image": "/images/food.png"
+      "category": "food",
+      "image": "https://via.placeholder.com/150?text=Food",
+      "listId": "4dc1"
     },
     {
-      "id": "620e5ce0-bfe8-493c-8e4a-01a673abde8b",
-      "name": "paint",
-      "quantity": 2,
+      "id": "afb96d01-5c15-44e6-ad19-84982aa65a9e",
+      "name": "eggs",
+      "quantity": 18,
       "notes": "",
-      "category": "Appliances",
-      "image": "/images/appliances.png"
-    },
-    {
-      "id": "0c1bc07f-3103-4ad8-997d-6b2ce2d105d2",
-      "name": "rice",
-      "quantity": 3,
-      "notes": "2kgs ",
       "category": "Food",
       "image": "/images/food.png"
     }
