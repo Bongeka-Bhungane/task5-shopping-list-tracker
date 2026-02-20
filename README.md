@@ -29,7 +29,7 @@ The app allows users to manage their shopping items by adding, viewing, updating
 
 - typescript
 
-- bootstrap styling
+- styling: plain css
 
 ### Performance
 - Fast loading with optimized components
@@ -56,17 +56,7 @@ The app allows users to manage their shopping items by adding, viewing, updating
    npm install
    ```
 
-3. **Start the development server**
+3. **To run both Frontend and backend (json server)**
    ```bash
-   npm run dev
-   ```
-### Database/ backend
-1. direct to the database folder
- ```bash
-   cd src/data
-   ```
-
-2. run the server
-```bash
-   npx json-server db.json
+   npm run start
    ```
