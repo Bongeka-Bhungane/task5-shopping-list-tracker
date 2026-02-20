@@ -1,0 +1,48 @@
+{
+  "users": [
+    {
+      "id": "x9oxNeU6wXoNFSGowHeCc",
+      "email": "angela@gmail.com",
+      "passwordHash": "$2b$10$bM74S.zvg39AM8cT8.Dg3eTqRegnphQTb9IzjwMYMQXrIiVFG/Ksi",
+      "name": "Bongeka",
+      "surname": "Bhungane",
+      "cell": "+27832964212",
+      "createdAt": "2026-02-18T08:49:50.136Z",
+      "updatedAt": "2026-02-20T06:13:16.162Z"
+    },
+    {
+      "id": "dP0exHZ4f2lNogjS2g6X9",
+      "email": "lulonke@gmail.com",
+      "passwordHash": "$2b$10$IBSCmJxs9nA5wR7uN6beXO0HaM.iDlZAxB3PRsq0o4lX1aqFugo/.",
+      "name": "Lulonke",
+      "surname": "Bhungane",
+      "cell": "+27832964212",
+      "createdAt": "2026-02-18T10:10:19.396Z",
+      "updatedAt": "2026-02-18T10:10:19.396Z"
+    }
+  ],
+  "lists": [
+    {
+      "id": "ar27wEF6xivnB-Qi-hiSg",
+      "userId": "x9oxNeU6wXoNFSGowHeCc",
+      "name": "school",
+      "createdAt": "2026-02-18T10:07:01.526Z",
+      "updatedAt": "2026-02-20T07:24:37.335Z",
+      "shareToken": "AJoGD312Iaw9"
+    }
+  ],
+  "items": [
+    {
+      "id": "0xpLhHZiJYSKIUq1pDqMx",
+      "userId": "x9oxNeU6wXoNFSGowHeCc",
+      "listId": "ar27wEF6xivnB-Qi-hiSg",
+      "name": "pen",
+      "quantity": 3,
+      "category": "Stationary",
+      "notes": "black, clue & red pen",
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-Wg3BBfW37xkXbosFewp7-lwlPXfaUfHz9g&s",
+      "createdAt": "2026-02-19T06:27:45.223Z",
+      "updatedAt": "2026-02-19T06:27:45.223Z"
+    }
+  ]
+}
