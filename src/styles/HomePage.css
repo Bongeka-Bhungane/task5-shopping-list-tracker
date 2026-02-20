@@ -1,0 +1,274 @@
+.homePage {
+  min-height: 100vh;
+  min-width: 0;
+}
+
+.homeLayout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 16px;
+  padding: 16px;
+  width: 100%;
+  max-width: none;   /* changed */
+  margin: 0; 
+  min-width: 0;
+}
+
+.listsPanel,
+.itemsPanel {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
+  min-height: 600px;
+  min-width: 0;
+}
+
+
+.panelHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.panelHeader h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.muted {
+  color: var(--muted);
+  margin: 6px 0 0;
+  font-size: 13px;
+}
+
+.panelBody {
+  padding: 16px;
+}
+
+.listStack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.empty {
+  display: grid;
+  gap: 10px;
+  place-items: start;
+}
+
+.loader {
+  color: var(--muted);
+}
+
+.btn {
+  border: 1px solid rgba(255,255,255,0.15);
+  background: transparent;
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: transform 0.08s ease, background 0.15s ease;
+}
+
+.btn:hover:not(:disabled) {
+  background: rgba(255,255,255,0.06);
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn.primary {
+  background: var(--primary);
+  border-color: transparent;
+  color: white;
+}
+
+.headerActions {
+  display: flex;
+  gap: 10px;
+}
+
+.filtersRow {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.field input,
+.field select,
+.field textarea {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.28); /* changed stronger */
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 12px;
+  outline: none;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: rgba(79,124,255,0.7);
+}
+
+.shareBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+}
+
+.shareLeft {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+}
+
+.shareLabel {
+  color: var(--muted);
+  font-size: 12px;
+  flex: 0 0 auto;
+}
+
+.shareLink {
+  font-size: 12px;
+  color: var(--text);
+  opacity: 0.95;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 520px;
+  border-bottom: 1px dashed rgba(255,255,255,0.35);
+}
+
+.shareLink:hover {
+  opacity: 1;
+  border-bottom-color: rgba(255,255,255,0.7);
+}
+
+.modalForm .grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.listsFilters {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ✅ 3-column filters row for items: search + category + sort */
+.filtersRow.filtersRow3 {
+  grid-template-columns: 1fr 240px 240px;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1024px) {
+  .homeLayout {
+    grid-template-columns: 320px 1fr;
+  }
+
+  .shareLink {
+    max-width: 360px;
+  }
+
+  .filtersRow.filtersRow3 {
+    grid-template-columns: 1fr 220px 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .homeLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .listsPanel,
+  .itemsPanel {
+    min-height: auto;
+  }
+
+  /* Filters become stacked */
+  .filtersRow {
+    grid-template-columns: 1fr;
+  }
+
+  .filtersRow.filtersRow3 {
+    grid-template-columns: 1fr;
+  }
+
+  /* Modal fields become stacked */
+  .modalForm .grid2 {
+    grid-template-columns: 1fr;
+  }
+
+  /* ✅ Share bar wraps nicely on mobile */
+  .shareBar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .shareLeft {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .shareLink {
+    max-width: 100%;
+  }
+
+  .shareRight {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  /* ✅ Lists filter stays readable */
+  .listsFilters {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .panelHeader {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .headerActions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}

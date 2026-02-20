@@ -1,0 +1,80 @@
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: grid;
+  place-items: center;
+  z-index: 50;
+  padding: 16px;
+}
+
+.modalCard {
+  width: min(640px, 100%);
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.modalHeader h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.xBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: transparent;
+  color: var(--text);
+  font-size: 18px;
+}
+
+.xBtn:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+.modalBody {
+  padding: 16px;
+}
+
+.modalFooter {
+  padding: 14px 16px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btnGhost,
+.btnPrimary {
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 800;
+}
+
+.btnGhost {
+  border: 1px solid rgba(255,255,255,0.14);
+  background: transparent;
+  color: var(--text);
+}
+
+.btnGhost:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+.btnPrimary {
+  border: 0;
+  background: var(--primary);
+  color: white;
+}

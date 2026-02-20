@@ -1,0 +1,89 @@
+.listCard {
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.02);
+  transition: transform 0.08s ease, border-color 0.15s ease;
+}
+
+.listCard:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,0.18);
+}
+
+.listCard.selected {
+  border-color: rgba(79,124,255,0.7);
+  box-shadow: 0 0 0 3px rgba(79,124,255,0.15);
+}
+
+.listMain {
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.listTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.listTitle {
+  font-weight: 800;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pill {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  color: var(--muted);
+  flex: 0 0 auto;
+}
+
+.listMeta {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.listActions {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px 12px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.iconBtn {
+  flex: 1;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: transparent;
+  color: var(--text);
+  padding: 8px 10px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.iconBtn:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+.iconBtn.danger {
+  border-color: rgba(255,79,109,0.35);
+  color: #ffd0d8;
+}
+
+.iconBtn.danger:hover {
+  background: rgba(255,79,109,0.10);
+}
